@@ -14,9 +14,19 @@ function guardarNombre() {
 }
 
 function mostrarPopUp() {
-    document.getElementById("popUp").classList.add("open-popUp");
+    document.getElementById("popUp1").classList.add("open-popUp1");
 }
 
+function verPuntaje() {
+    window.location.href = "points.html";
+}
+
+function irAtras() {
+    if (window.location.pathname == "/game.html") {
+        localStorage.setItem("rondasGanadas", simon.getRoundsWon());
+    }
+    window.location.href = "index.html";
+}
 
 const round = document.getElementById('round');
 const simonButtons = document.getElementsByClassName('square');
@@ -31,7 +41,10 @@ class Simon {
         this.speed = 1000;
         this.blockedButtons = true;
         this.buttons = Array.from(simonButtons);
-        this.display = {startButton, round};
+        this.display = {
+            "startButton": startButton, 
+            "round": round
+        };
         this.errorSound = new Audio('./sounds/error.mp3');
         this.buttonSounds = [
             new Audio('./sounds/1.mp3'),
@@ -131,8 +144,22 @@ class Simon {
             element.classList.add('winner');
         });
         this.updateRound('🏆');
+        localStorage.setItem("rondasGanadas", round);
+    }
+
+    getRoundsWon() {
+        return this.round;
     }
 }
 
 const simon = new Simon(round, simonButtons, startButton);
-simon.init();
+
+(() => { 
+    if (window.location.pathname == "/game.html") {
+        simon.init();
+    }
+})();
+
+function reiniciar() {
+    simon.init();
+}
