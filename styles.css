@@ -57,10 +57,6 @@ button {
     padding: 50px;
 }
 
-.round {
-    color: whitesmoke;
-}
-
 .square {
     border-radius: 5px;
     width: 150px;
