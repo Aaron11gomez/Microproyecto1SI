@@ -2,32 +2,63 @@ body {
     display: inline-block;
     place-items: center;
     width: 100%;
+    background-color: #222021;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.popUp {
+    width: 400px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    visibility: hidden;
+}
+
+.open-popUp {
+    visibility: visible;
+}
+
+.text {
+    padding: 15px;
+    color: whitesmoke;
+    font-size: 25px;
 }
 
 button {
     display: block;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
+    width: 200px;
     border-radius: 10px;
-    margin: 75px auto;
-    padding: 10px 30px;
-    background-color: aqua;
-    color: black;
+    border-color: whitesmoke;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #222021;
+    color: whitesmoke;
     text-align: center;
     text-decoration: none;
     cursor: pointer;
 }
 
-.juego {
+.game {
     position: relative;
-    margin-top: 50px;
-    padding: 10px;
+    margin: 50px;
+    padding-bottom: 50px;
     border-radius: 5px;
 }
 
 .title {
-    width: min-content;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: whitesmoke;
+    padding: 50px;
+}
+
+.round {
+    color: whitesmoke;
 }
 
 .square {
@@ -39,21 +70,18 @@ button {
 
 .square:active,
 .active {
-    filter: brightness(130%);
+    filter: brightness(120%);
 }
 
 .Red {
     background-color: #ff6961;
 }
-
 .Blue {
     background-color: #83ebf2;
 }
-
 .Green {
     background-color: #80ef80;
 }
-
 .Yellow {
     background-color: #fdfd96;
 }
@@ -66,6 +94,5 @@ button {
 }
 
 .grid {
-    display: inline-block;
-    
+    display: inline-block;  
 }
