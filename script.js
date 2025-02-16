@@ -1,12 +1,10 @@
 function guardarNombre() {
     document.getElementById("nameButton").addEventListener("click", function(event) {
         const user = document.getElementById("nombre_jugador").value.trim();
-        console.log("User input:", user);
         
         if (user) {
             localStorage.setItem("nombreUsuario", user);
             window.location.href = "game.html";
-            console.log("changing...")
         } else {
             alert("Por favor ingresa tu nombre para jugar.");
         }
@@ -23,7 +21,16 @@ function verPuntaje() {
 
 function irAtras() {
     if (window.location.pathname == "/game.html") {
-        localStorage.setItem("rondasGanadas", simon.getRoundsWon());
+        if(localStorage.getItem("leaderboard") == null) {
+            localStorage.setItem("leaderboard", JSON.stringify({}));
+        }
+
+        var leaderboard = JSON.parse(localStorage.getItem("leaderboard"));
+        const username = localStorage.getItem("nombreUsuario");
+        if(leaderboard[username] == null || simon.getRoundsWon() > leaderboard[username]) {
+            leaderboard[username] = simon.getRoundsWon();
+            localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+        }
     }
     window.location.href = "index.html";
 }
@@ -135,6 +142,8 @@ class Simon {
         this.errorSound.play();
         this.display.startButton.disabled = false; 
         this.blockedButtons = true;
+        const popUp2 = document.getElementById("popUp2");
+        popUp2.classList.add("open-popUp2");
     }
 
     gameWon() {
@@ -143,8 +152,10 @@ class Simon {
         this.buttons.forEach(element =>{
             element.classList.add('winner');
         });
-        this.updateRound('🏆');
+        this.updateRound('10');
         localStorage.setItem("rondasGanadas", round);
+        const popUp3 = document.getElementById("popUp3");
+        popUp3.classList.add("open-popUp3");
     }
 
     getRoundsWon() {
@@ -155,11 +166,36 @@ class Simon {
 const simon = new Simon(round, simonButtons, startButton);
 
 (() => { 
+    if(localStorage.getItem("leaderboard") == null) {
+        localStorage.setItem("leaderboard", JSON.stringify({}));
+    }
+
     if (window.location.pathname == "/game.html") {
         simon.init();
+    } else if (window.location.pathname == "/points.html") {
+        const nombreUsuario = localStorage.getItem("nombreUsuario");
+        const puntaje = simon.getRoundsWon();
+        const leaderboardDiv = document.getElementById("leaderboard");
+        const leaderboardContainer = JSON.parse(localStorage.getItem("leaderboard"));
+        const sortedLeaderboard = Object.entries(leaderboardContainer).sort((a, b) => b[1] - a[1]);
+        sortedLeaderboard.forEach(([nombre, puntuacion]) => {
+            const nombreDiv = document.createElement("div");
+            nombreDiv.classList.add("grid-item");
+            nombreDiv.textContent = nombre;
+        
+            const puntajeDiv = document.createElement("div");
+            puntajeDiv.classList.add("grid-item");
+            puntajeDiv.textContent = puntuacion;
+        
+            leaderboardDiv.appendChild(nombreDiv);
+            leaderboardDiv.appendChild(puntajeDiv);
+        });
     }
 })();
 
 function reiniciar() {
     simon.init();
 }
+
+
+
